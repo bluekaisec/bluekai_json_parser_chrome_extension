@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+
+.thickTop {
+	border-top: 3px solid black;
+}
+
+
+.string {
+	color: green;
+}
+
+.number {
+	color: darkorange;
+}
+
+.boolean {
+	color: blue;
+}
+
+.null {
+	color: magenta;
+}
+
+.key {
+	color: red;
+}

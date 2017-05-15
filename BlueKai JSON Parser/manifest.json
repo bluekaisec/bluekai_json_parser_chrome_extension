@@ -1,0 +1,35 @@
+{
+	"name": "Bluekai JSON Parser",
+	"version": "0.1",
+	"minimum_chrome_version": "10.0",
+	"description": "This unofficial Chrome extension displays the result of the BlueKai JSON return tag in user friendly format",
+	"content_scripts": [
+		{
+			"matches": [
+				"*://tags.bluekai.com/site/*"
+			],
+			"js": [
+				"libraries/jquery/jquery-3.1.1.min.js",
+				"libraries/bootstrap/js/bootstrap.js",
+				"content.js"
+			],
+			"css": [
+				"libraries/bootstrap/css/bootstrap-modified.css",
+				"css/jsonParser.css"
+			]
+		}
+	],
+	"permissions": [
+		"http://*/*",
+		"https://*/*"
+	],
+	"manifest_version": 2,
+	"icons": {
+		"16": "images/icon16.png",
+		"48": "images/icon48.png",
+		"128": "images/icon128.png"
+	},
+	"browser_action": {
+		"default_icon": "images/icon.png"
+	}
+}
