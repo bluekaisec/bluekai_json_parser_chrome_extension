@@ -1,9 +1,16 @@
 @CHARSET "UTF-8";
 
+td {
+	vertical-align: middle;
+}
+
+.modal-dialog {
+	width: 95%;
+}
+
 .thickTop {
 	border-top: 3px solid black;
 }
-
 
 .string {
 	color: green;
@@ -23,4 +30,25 @@
 
 .key {
 	color: red;
+}
+
+.small {
+	width: 50px;
+}
+
+.medium {
+	width: 70px;
+	margin-right: 10px;
+}
+
+.large {
+	width: 150px;
+}
+
+pre {
+	height: 100%;
+}
+
+pre.pre-scrollable {
+	max-height: 70%
 }
