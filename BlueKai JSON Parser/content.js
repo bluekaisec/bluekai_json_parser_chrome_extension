@@ -1,3 +1,13 @@
+function nthIndex(str, pat, n) {
+	var L = str.length, i = -1;
+	while (n-- && i++ < L) {
+		i = str.indexOf(pat, i);
+		if (i < 0)
+			break;
+	}
+	return i;
+}
+
 var processPathReturn = function(id, inventoryModalId) {
 	return function(data, textStatus, jqXHR) {
 		var s = data.split("</tr>");
@@ -6,9 +16,20 @@ var processPathReturn = function(id, inventoryModalId) {
 		} else {
 			var taxonomyPath = s[1].split("<td>")[21].replace("</td>", "");
 
+			var taxonomyPathShort = "";
+			// var count = (taxonomyPath.match(/ > /g) || []).length;
+
+			pos3 = nthIndex(taxonomyPath, " > ", 3);
+
+			if (pos3 > -1) {
+				taxonomyPathShort = "..." + taxonomyPath.substring(pos3);
+			} else {
+				taxonomyPathShort = taxonomyPath;
+			}
+
 		}
 		var span = $('#' + id);
-		span[0].innerHTML = taxonomyPath;
+		span[0].innerHTML = taxonomyPathShort;
 
 		var inventoryTitle = $('#' + inventoryModalId + '-title');
 
@@ -21,6 +42,7 @@ var processRulesReturn = function(id) {
 	return function(data, textStatus, jqXHR) {
 
 		var rules = "";
+		var content = "";
 		var s = data.split("</tr>");
 		if (data.includes("BlueKai Authentication")) {
 			rules = "Not logged in...";
@@ -28,12 +50,23 @@ var processRulesReturn = function(id) {
 			rules = s[1].split("<td>")[4].replace("</td>", "");
 			if (rules.includes("<b>Rule</b>")) {
 				// this is hit when no rules are returned in the table.
-				rules = "";
+				content = "";
+			} else {
+				r = rules.split("&");
+				var l = r.length;
+
+				content = "<ul>";
+				for (var i = 0; i < l; i++) {
+					content = content + "<li>" + r[i] + "</li>";
+
+				}
+				content = content + "</ul>";
+
 			}
 
 		}
 		var span = $('#' + id);
-		span[0].innerHTML = rules;
+		span[0].innerHTML = content;
 
 	};
 };
@@ -165,7 +198,7 @@ function doTableBuild() {
 				row.addClass('thickTop');
 
 				if (window.jsonparser.adminLoggedIn) {
-					row.append('<td><a href="http://tags.bluekai.com/state_dump?campid=' + campaign.campaign
+					row.append('<td><a href="//tags.bluekai.com/state_dump?campid=' + campaign.campaign
 							+ '&camps=1">' + campaign.campaign + '</a></td>');
 				} else {
 					row.append('<td>' + campaign.campaign + '</td>');
@@ -269,8 +302,8 @@ function buildCategoryCells(campaignId, category, row) {
 
 	var campCatId = campaignId + "-" + catId
 
-	var urlStringPath = "http://tags.bluekai.com/state_dump?cat=" + catId + "&cats=1";
-	var urlStringRules = "http://tags.bluekai.com/state_dump?mtype=FE&rules=1&rc=" + catId;
+	var urlStringPath = "//tags.bluekai.com/state_dump?cat=" + catId + "&cats=1";
+	var urlStringRules = "//tags.bluekai.com/state_dump?mtype=FE&rules=1&rc=" + catId;
 
 	var spanIdPath = campCatId + "-path";
 	var spanIdRules = campCatId + "-rules";
@@ -328,7 +361,7 @@ function retrieveInventory(catId) {
 
 	updateRetrieveBtns(catId, true, "loading...", "wait...");
 
-	var urlStringInventory = "http://admin.bluekai.com/InventoryTrendReport?sellerSelect=*+All+*&tagSelect=*+All+*&taxonomyNode="
+	var urlStringInventory = "//admin.bluekai.com/InventoryTrendReport?sellerSelect=*+All+*&tagSelect=*+All+*&taxonomyNode="
 			+ catId
 			+ "&frequency=1&inventoryType=normal&date=Radio1&timePeriod=5&interval=daily&columnNamesBox=Data+Provider&columnNamesBox=Site";
 
@@ -420,7 +453,7 @@ function start() {
 
 	if (typeof bk_results !== "undefined") {
 
-		$.get("http://tags.bluekai.com/state_dump", function(data) {
+		$.get("//tags.bluekai.com/state_dump", function(data) {
 
 			document.body.innerHTML = '';
 
